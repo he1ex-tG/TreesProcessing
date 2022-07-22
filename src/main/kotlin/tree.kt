@@ -1,6 +1,6 @@
 sealed class Node
 
-class NoneNo : Node()
+class NodeNo : Node()
 
 class NodeYes(
     val value: Int,
