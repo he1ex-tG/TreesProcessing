@@ -1,4 +1,4 @@
-class treeProcessing(
+class TreeProcessor(
     private val baseNode: Node
 ) {
     fun calcSumOfNodes() = recurrentCalcSumOfNodes(baseNode)

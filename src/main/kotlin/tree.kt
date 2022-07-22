@@ -5,5 +5,5 @@ class NodeNo : Node()
 class NodeYes(
     val value: Int,
     val leftNode: Node,
-    val rightNode: Node
+    val rightNode: Node,
 ) : Node ()
