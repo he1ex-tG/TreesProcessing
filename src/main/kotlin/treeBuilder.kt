@@ -29,7 +29,11 @@ object TreeBuilder {
             NodeYes(
                 3,
                 NodeNo(),
-                NodeNo()
+                NodeYes(
+                    4,
+                    NodeNo(),
+                    NodeNo()
+                )
             )
         )
         BuildModes.EMPTY -> NodeNo()
