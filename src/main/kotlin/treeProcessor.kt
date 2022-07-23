@@ -3,7 +3,6 @@ import kotlin.math.max
 class TreeProcessor(
     private val baseNode: Node
 ) {
-
     fun maxDepth() = recurrentDepthCalc(baseNode)
 
     private fun recurrentDepthCalc(node: Node): Int = when(node) {
