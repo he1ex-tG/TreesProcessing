@@ -13,26 +13,31 @@ enum class BuildMode {
     },
     FILL_HARD {
         override fun method(): Int {
-            var n = (Int.MAX_VALUE / 2..Int.MAX_VALUE).random()
             var result = 0
-            while (n % 2 == 0) {
-                result += 2
-                n /= 2
-            }
+            for (maxVal in Int.MAX_VALUE / 2..Int.MAX_VALUE / 2 + 99000) {
+                var n = (maxVal / 2..maxVal).random()
 
-            var i = 3
-            while (i <= sqrt(n.toDouble())) {
-                while (n % i == 0) {
-                    result += i
-                    n /= i
+                while (n % 2 == 0) {
+                    result += 2
+                    n /= 2
                 }
-                i += 2
+
+                var i = 3
+                while (i <= sqrt(n.toDouble())) {
+                    while (n % i == 0) {
+                        result += i
+                        n /= i
+                    }
+                    i += 2
+                }
+
+                if (n > 2)
+                    result += n
+
+                result %= 9
             }
 
-            if (n > 2)
-                result += n
-
-            return result % 9
+            return result
         }
     };
 
