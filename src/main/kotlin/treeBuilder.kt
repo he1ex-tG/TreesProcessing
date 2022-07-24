@@ -1,53 +1,25 @@
 enum class BuildMode {
     EMPTY,
     FILL_RANDOM,
-    FILL_DEFAULT,
+    FILL_DEFAULT;
 }
 
 object TreeBuilder {
-    fun build(mode: BuildMode = BuildMode.FILL_DEFAULT): Node = when (mode) {
-        BuildMode.FILL_RANDOM -> NodeYes(
-            (0..100).random(),
-            NodeYes(
-                (0..100).random(),
-                NodeNo(),
-                NodeNo()
-            ),
-            NodeYes(
-                (0..100).random(),
-                NodeNo(),
-                NodeNo()
-            )
-        )
-        BuildMode.FILL_DEFAULT -> NodeYes(
-            1,
-            NodeYes(
-                2,
-                NodeNo(),
-                NodeNo()
-            ),
-            NodeYes(
-                3,
-                NodeNo(),
-                NodeYes(
-                    4,
-                    NodeNo(),
-                    NodeNo()
-                )
-            )
-        )
-        BuildMode.EMPTY -> NodeNo()
-    }
-
+    private var defaultCounter = 1
     fun buildAuto(depth: Int = 0, mode: BuildMode = BuildMode.EMPTY): Node = when(mode) {
         BuildMode.EMPTY -> NodeNo()
-        else -> recurrentBuild(depth, mode)
+        BuildMode.FILL_RANDOM -> recurrentBuild(depth, mode)
+        BuildMode.FILL_DEFAULT -> recurrentBuild(depth, mode).also { defaultCounter = 1 }
     }
 
     private fun recurrentBuild(depth: Int, mode: BuildMode): Node =
         if (depth > 0) {
             NodeYes(
-                1,
+                when(mode) {
+                    BuildMode.EMPTY -> 0
+                    BuildMode.FILL_RANDOM -> (0..9).random()
+                    BuildMode.FILL_DEFAULT -> defaultCounter++
+                },
                 recurrentBuild(depth - 1, mode),
                 recurrentBuild(depth - 1, mode)
             )
