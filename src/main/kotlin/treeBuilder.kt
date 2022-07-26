@@ -50,20 +50,27 @@ enum class BuildMode {
     abstract fun method(): Int
 }
 
+enum class Concurrency {
+    WITH_CONCURRENCY,
+    WITHOUT_CONCURRENCY
+}
+
 object TreeBuilder {
-    fun buildAuto(depth: Int = 0, mode: BuildMode = BuildMode.EMPTY): Node =
-        recurrentBuild(depth) { mode.method() }
+    fun buildAuto(depth: Int = 0, mode: BuildMode = BuildMode.EMPTY, concurrency: Concurrency = Concurrency.WITH_CONCURRENCY): Node =
+        when(concurrency) {
+            Concurrency.WITH_CONCURRENCY -> recurrentBuildConcurrency(depth) { mode.method() }
+            Concurrency.WITHOUT_CONCURRENCY -> recurrentBuild(depth) { mode.method() }
+        }
 
-
-    private fun recurrentBuild(depth: Int, method: () -> Int): Node = runBlocking {
+    private fun recurrentBuildConcurrency(depth: Int, method: () -> Int): Node = runBlocking {
         if (depth > 0) {
             val leftNode = Channel<Node>()
+            launch {
+                leftNode.send(recurrentBuildConcurrency(depth - 1, method))
+            }
             val rightNode = Channel<Node>()
             launch {
-                leftNode.send(recurrentBuild(depth - 1, method))
-            }
-            launch {
-                rightNode.send(recurrentBuild(depth - 1, method))
+                rightNode.send(recurrentBuildConcurrency(depth - 1, method))
             }
             NodeYes(
                 method(),
@@ -74,4 +81,15 @@ object TreeBuilder {
             NodeNo()
         }
     }
+
+    private fun recurrentBuild(depth: Int, method: () -> Int): Node =
+        if (depth > 0) {
+            NodeYes(
+                method(),
+                recurrentBuild(depth - 1, method),
+                recurrentBuild(depth - 1, method)
+            )
+        } else {
+            NodeNo()
+        }
 }
