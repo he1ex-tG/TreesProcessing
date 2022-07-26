@@ -1,3 +1,7 @@
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.math.sqrt
 
 enum class BuildMode {
@@ -12,32 +16,34 @@ enum class BuildMode {
         override fun method() = x++
     },
     FILL_HARD {
-        override fun method(): Int {
+        override fun method(): Int = runBlocking {
             var result = 0
-            for (maxVal in Int.MAX_VALUE / 2..Int.MAX_VALUE / 2 + 99000) {
-                var n = (maxVal / 2..maxVal).random()
+            val maxVal = Int.MAX_VALUE
 
-                while (n % 2 == 0) {
-                    result += 2
-                    n /= 2
-                }
+            var n = (maxVal / 2..maxVal).random()
 
-                var i = 3
-                while (i <= sqrt(n.toDouble())) {
-                    while (n % i == 0) {
-                        result += i
-                        n /= i
-                    }
-                    i += 2
-                }
-
-                if (n > 2)
-                    result += n
-
-                result %= 9
+            while (n % 2 == 0) {
+                result += 2
+                n /= 2
             }
 
-            return result
+            var i = 3
+            while (i <= sqrt(n.toDouble())) {
+                while (n % i == 0) {
+                    result += i
+                    n /= i
+                }
+                i += 2
+            }
+
+            if (n > 2)
+                result += n
+
+            result %= 9
+
+            delay(100)
+
+            result
         }
     };
 
@@ -48,14 +54,24 @@ object TreeBuilder {
     fun buildAuto(depth: Int = 0, mode: BuildMode = BuildMode.EMPTY): Node =
         recurrentBuild(depth) { mode.method() }
 
-    private fun recurrentBuild(depth: Int, method: () -> Int): Node =
+
+    private fun recurrentBuild(depth: Int, method: () -> Int): Node = runBlocking {
         if (depth > 0) {
+            val leftNode = Channel<Node>()
+            val rightNode = Channel<Node>()
+            launch {
+                leftNode.send(recurrentBuild(depth - 1, method))
+            }
+            launch {
+                rightNode.send(recurrentBuild(depth - 1, method))
+            }
             NodeYes(
                 method(),
-                recurrentBuild(depth - 1, method),
-                recurrentBuild(depth - 1, method)
+                leftNode.receive(),
+                rightNode.receive()
             )
         } else {
             NodeNo()
         }
+    }
 }

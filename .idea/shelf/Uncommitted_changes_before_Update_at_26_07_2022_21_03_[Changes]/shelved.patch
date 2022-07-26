@@ -1,0 +1,35 @@
+Index: src/main/kotlin/main.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>fun main() {\r\n    val treeEmpty = TreeBuilder.build(BuildMode.EMPTY)\r\n    val treeDefault = TreeBuilder.build()\r\n    val treeRandom = TreeBuilder.build(BuildMode.FILL_RANDOM)\r\n\r\n    println(\"Nodes sum of empty tree is \" + TreeProcessor(treeEmpty).calcSumOfNodes())\r\n    println(\"Default nodes sum of tree is \" + TreeProcessor(treeDefault).calcSumOfNodes())\r\n    println(\"Random nodes sum of tree is \" + TreeProcessor(treeRandom).calcSumOfNodes())\r\n\r\n    println(\"Empty tree max depth is \" + TreeProcessor(treeEmpty).maxDepth())\r\n    println(\"Default tree max depth is \" + TreeProcessor(treeDefault).maxDepth())\r\n    println(\"Default tree max depth is \" + TreeProcessor(treeRandom).maxDepth())\r\n\r\n    val treeAuto = TreeBuilder.buildAuto(2, BuildMode.FILL_DEFAULT)\r\n    println(\"Auto tree max depth is \" + TreeProcessor(treeAuto).maxDepth())\r\n    println(\"Nodes sum of auto tree is \" + TreeProcessor(treeAuto).calcSumOfNodes())\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/kotlin/main.kt b/src/main/kotlin/main.kt
+--- a/src/main/kotlin/main.kt	(revision dd30e62b06391131f478e09beb3cd89d81a7082d)
++++ b/src/main/kotlin/main.kt	(date 1658604249253)
+@@ -11,7 +11,7 @@
+     println("Default tree max depth is " + TreeProcessor(treeDefault).maxDepth())
+     println("Default tree max depth is " + TreeProcessor(treeRandom).maxDepth())
+ 
+-    val treeAuto = TreeBuilder.buildAuto(2, BuildMode.FILL_DEFAULT)
++    val treeAuto = TreeBuilder.buildAuto(25, BuildMode.FILL_DEFAULT)
+     println("Auto tree max depth is " + TreeProcessor(treeAuto).maxDepth())
+     println("Nodes sum of auto tree is " + TreeProcessor(treeAuto).calcSumOfNodes())
+ }
+\ No newline at end of file
+Index: build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/counters.tab
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>39\r\n0
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/counters.tab b/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/counters.tab
+--- a/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/counters.tab	(revision dd30e62b06391131f478e09beb3cd89d81a7082d)
++++ b/build/kotlin/compileKotlin/cacheable/caches-jvm/lookups/counters.tab	(date 1658604250735)
+@@ -1,2 +1,2 @@
+-39
++46
+ 0
+\ No newline at end of file
