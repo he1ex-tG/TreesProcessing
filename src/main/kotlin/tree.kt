@@ -1,6 +1,6 @@
 sealed interface Node
 
-class NodeNo : Node
+object NodeNo : Node
 
 class NodeYes(
     val value: Int,

@@ -78,7 +78,7 @@ object TreeBuilder {
                 rightNode.receive()
             )
         } else {
-            NodeNo()
+            NodeNo
         }
     }
 
@@ -90,6 +90,6 @@ object TreeBuilder {
                 recurrentBuild(depth - 1, method)
             )
         } else {
-            NodeNo()
+            NodeNo
         }
 }
